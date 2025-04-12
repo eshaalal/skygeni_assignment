@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Container, Grid, Paper, Typography, Box, CircularProgress } from '@mui/material';
 import PipelineChart from './components/PipelineChart';
 import PipelineTable from './components/PipelineTable';
+import './App.css'; // Import the CSS
 
 function App() {
   const [pipelineData, setPipelineData] = useState(null);
@@ -55,39 +56,47 @@ function App() {
   const winRateByACV = Math.round((wonData.acv / suspectData.acv) * 100);
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
-      <Grid container spacing={3}>
+    <Container maxWidth="xl" className="pipeline-container">
+      <Grid container spacing={4} direction="column">
         {/* Win Rate by Count */}
-        <Grid item xs={12} md={6}>
-          <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
-            <Typography variant="h6" gutterBottom>
+        <Grid item xs={12} className="pipeline-grid-item">
+          <Paper elevation={3} className="pipeline-card" sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
               Win Rate by opportunity count: {winRateByCount}%
             </Typography>
-            <PipelineChart 
-              data={pipelineData} 
-              valueType="count" 
-            />
-            <PipelineTable 
-              data={pipelineData} 
-              valueType="count" 
-            />
+            <Box className="chart-container">
+              <PipelineChart 
+                data={pipelineData} 
+                valueType="count" 
+              />
+            </Box>
+            <Box className="table-container">
+              <PipelineTable 
+                data={pipelineData} 
+                valueType="count" 
+              />
+            </Box>
           </Paper>
         </Grid>
         
         {/* Win Rate by ACV */}
-        <Grid item xs={12} md={6}>
-          <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
-            <Typography variant="h6" gutterBottom>
+        <Grid item xs={12} className="pipeline-grid-item">
+          <Paper elevation={3} className="pipeline-card" sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
               Win Rate by ACV: {winRateByACV}%
             </Typography>
-            <PipelineChart 
-              data={pipelineData} 
-              valueType="acv" 
-            />
-            <PipelineTable 
-              data={pipelineData} 
-              valueType="acv" 
-            />
+            <Box className="chart-container">
+              <PipelineChart 
+                data={pipelineData} 
+                valueType="acv" 
+              />
+            </Box>
+            <Box className="table-container">
+              <PipelineTable 
+                data={pipelineData} 
+                valueType="acv" 
+              />
+            </Box>
           </Paper>
         </Grid>
       </Grid>
