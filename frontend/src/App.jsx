@@ -1,6 +1,6 @@
 // src/App.jsx
 import { useState, useEffect } from 'react';
-import { Container, Grid, Paper, Typography, Box, CircularProgress } from '@mui/material';
+import { Container, Grid, Paper, Typography, Box, CircularProgress, Tabs, Tab, Divider } from '@mui/material';
 import PipelineChart from './components/PipelineChart';
 import PipelineTable from './components/PipelineTable';
 import './App.css'; // Import the CSS
@@ -9,6 +9,7 @@ function App() {
   const [pipelineData, setPipelineData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     const fetchPipelineData = async () => {
@@ -29,6 +30,10 @@ function App() {
 
     fetchPipelineData();
   }, []);
+
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
 
   if (loading) {
     return (
@@ -57,19 +62,81 @@ function App() {
 
   return (
     <Container maxWidth="xl" className="pipeline-container">
-      <Grid container spacing={4} direction="column">
-        {/* Win Rate by Count */}
-        <Grid item xs={12} className="pipeline-grid-item">
-          <Paper elevation={3} className="pipeline-card" sx={{ p: 3 }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+        <Tabs value={activeTab} onChange={handleTabChange} aria-label="pipeline tabs">
+          <Tab label="SUMMARY" />
+          <Tab label="DETAILS" />
+        </Tabs>
+      </Box>
+
+      {activeTab === 0 && (
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+          {/* Count-based card */}
+          <Box sx={{ flex: 1, width: { xs: '100%', md: '50%' } }}>
+            <Paper elevation={3} sx={{ p: 3, mb: 2 }}>
+              <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
+                Win Rate by opportunity count: {winRateByCount}%
+              </Typography>
+              <Box className="chart-container" sx={{ mb: 4 }}>
+                <PipelineChart 
+                  data={pipelineData} 
+                  valueType="count" 
+                />
+              </Box>
+            </Paper>
+            
+            <Paper elevation={3} sx={{ p: 0 }}>
+              <Box className="table-container">
+                <PipelineTable 
+                  data={pipelineData} 
+                  valueType="count" 
+                />
+              </Box>
+            </Paper>
+          </Box>
+          
+          {/* ACV-based card */}
+          <Box sx={{ flex: 1, width: { xs: '100%', md: '50%' } }}>
+            <Paper elevation={3} sx={{ p: 3, mb: 2 }}>
+              <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
+                Win Rate by ACV: {winRateByACV}%
+              </Typography>
+              <Box className="chart-container" sx={{ mb: 4 }}>
+                <PipelineChart 
+                  data={pipelineData} 
+                  valueType="acv" 
+                />
+              </Box>
+            </Paper>
+            
+            <Paper elevation={3} sx={{ p: 0 }}>
+              <Box className="table-container">
+                <PipelineTable 
+                  data={pipelineData} 
+                  valueType="acv" 
+                />
+              </Box>
+            </Paper>
+          </Box>
+        </Box>
+      )}
+
+      {activeTab === 1 && (
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          {/* Count-based detailed view */}
+          <Paper elevation={3} sx={{ p: 3, mb: 2 }}>
             <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
               Win Rate by opportunity count: {winRateByCount}%
             </Typography>
-            <Box className="chart-container">
+            <Box className="chart-container" sx={{ mb: 4 }}>
               <PipelineChart 
                 data={pipelineData} 
                 valueType="count" 
               />
             </Box>
+          </Paper>
+          
+          <Paper elevation={3} sx={{ p: 0, mb: 4 }}>
             <Box className="table-container">
               <PipelineTable 
                 data={pipelineData} 
@@ -77,20 +144,21 @@ function App() {
               />
             </Box>
           </Paper>
-        </Grid>
-        
-        {/* Win Rate by ACV */}
-        <Grid item xs={12} className="pipeline-grid-item">
-          <Paper elevation={3} className="pipeline-card" sx={{ p: 3 }}>
+          
+          {/* ACV-based detailed view */}
+          <Paper elevation={3} sx={{ p: 3, mb: 2 }}>
             <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
               Win Rate by ACV: {winRateByACV}%
             </Typography>
-            <Box className="chart-container">
+            <Box className="chart-container" sx={{ mb: 4 }}>
               <PipelineChart 
                 data={pipelineData} 
                 valueType="acv" 
               />
             </Box>
+          </Paper>
+          
+          <Paper elevation={3} sx={{ p: 0 }}>
             <Box className="table-container">
               <PipelineTable 
                 data={pipelineData} 
@@ -98,8 +166,8 @@ function App() {
               />
             </Box>
           </Paper>
-        </Grid>
-      </Grid>
+        </Box>
+      )}
     </Container>
   );
 }
