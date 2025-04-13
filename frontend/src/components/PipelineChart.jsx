@@ -14,11 +14,11 @@ const PipelineChart = ({ data, valueType }) => {
     // Clear any existing chart
     d3.select(svgRef.current).selectAll('*').remove();
 
-    // Set dimensions
-    const margin = { top: 20, right: 100, bottom: 30, left: 100 };
+    // Set dimensions - reduced for compactness
+    const margin = { top: 0, right: 60, bottom: 0, left: 60 };
     let width = svgRef.current.clientWidth - margin.left - margin.right;
-    const barHeight = isMobile ? 25 : is4K ? 50 : 35;
-    const height = (barHeight + 10) * data.length;
+    const barHeight = isMobile ? 20 : is4K ? 40 : 25;
+    const height = (barHeight + 5) * data.length;
 
     // Create SVG
     const svg = d3.select(svgRef.current)
@@ -67,7 +67,6 @@ const PipelineChart = ({ data, valueType }) => {
       .attr('height', y.bandwidth())
       .attr('x', 0)
       .attr('width', d => {
-        // Calculate the width based on the diffRate or diffacvRate
         const ratio = valueType === 'count' ? 
           d.percentages.stageToSuspect.count / 100 : 
           d.percentages.stageToSuspect.acv / 100;
@@ -85,7 +84,7 @@ const PipelineChart = ({ data, valueType }) => {
       .attr('x', -10)
       .attr('text-anchor', 'end')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', isMobile ? '12px' : is4K ? '18px' : '14px')
+      .attr('font-size', isMobile ? '10px' : is4K ? '14px' : '12px')
       .attr('fill', '#333')
       .text(d => d.label);
 
@@ -101,11 +100,11 @@ const PipelineChart = ({ data, valueType }) => {
           d.percentages.stageToSuspect.count / 100 : 
           d.percentages.stageToSuspect.acv / 100;
         const xPos = x(ratio) / 2;
-        return Math.max(xPos, 30); // Ensure label is visible
+        return Math.max(xPos, 30);
       })
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', isMobile ? '12px' : is4K ? '18px' : '14px')
+      .attr('font-size', isMobile ? '10px' : is4K ? '14px' : '12px')
       .attr('fill', '#fff')
       .text(d => valueType === 'count' ? d.count : d.formattedACV);
 
@@ -116,13 +115,12 @@ const PipelineChart = ({ data, valueType }) => {
       .append('text')
       .attr('class', 'percentage-label')
       .attr('y', d => y(d.label) + y.bandwidth() / 2)
-      .attr('x', width + 20)
+      .attr('x', width + 15)
       .attr('text-anchor', 'start')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', isMobile ? '12px' : is4K ? '18px' : '14px')
+      .attr('font-size', isMobile ? '10px' : is4K ? '14px' : '12px')
       .attr('fill', '#333')
       .text(d => {
-        // Show Win Rate percentages
         const percentage = valueType === 'count' ? 
           d.percentages.wonToStage.count : 
           d.percentages.wonToStage.acv;
@@ -131,23 +129,21 @@ const PipelineChart = ({ data, valueType }) => {
 
     // Add percentage labels between bars for transition rates
     svg.selectAll('.transition-label')
-      .data(data.slice(0, -1)) // Skip the last item (Won)
+      .data(data.slice(0, -1))
       .enter()
       .append('text')
       .attr('class', 'transition-label')
       .attr('y', (d, i) => {
-        // Position vertically between current bar and next bar
         const currentBarBottom = y(d.label) + y.bandwidth();
         const nextBarTop = i < data.length - 1 ? y(data[i + 1].label) : height;
-        return (currentBarBottom + nextBarTop) / 2; // Middle point between bars
+        return (currentBarBottom + nextBarTop) / 2;
       })
       .attr('x', d => width / 2)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', isMobile ? '10px' : is4K ? '16px' : '12px')
+      .attr('font-size', isMobile ? '8px' : is4K ? '12px' : '10px')
       .attr('fill', '#666')
       .text((d, i) => {
-        // Calculate the percentage to the next stage
         if (i < data.length - 1) {
           const nextStage = data[i + 1];
           const percentage = valueType === 'count' ? 

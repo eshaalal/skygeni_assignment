@@ -1,9 +1,8 @@
-// src/App.jsx
 import { useState, useEffect } from 'react';
 import { Container, Grid, Paper, Typography, Box, CircularProgress, Tabs, Tab, Divider } from '@mui/material';
 import PipelineChart from './components/PipelineChart';
 import PipelineTable from './components/PipelineTable';
-import './App.css'; // Import the CSS
+import './App.css';
 
 function App() {
   const [pipelineData, setPipelineData] = useState(null);
@@ -14,7 +13,6 @@ function App() {
   useEffect(() => {
     const fetchPipelineData = async () => {
       try {
-        // Fetch data from the backend API
         const response = await fetch('http://localhost:5000/api/pipeline-data');
         if (!response.ok) {
           throw new Error('Failed to fetch pipeline data');
@@ -53,7 +51,6 @@ function App() {
     );
   }
 
-  // Calculate win rates
   const suspectData = pipelineData.find(item => item.label === "Suspect");
   const wonData = pipelineData.find(item => item.label === "Won");
   
@@ -77,7 +74,7 @@ function App() {
               <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
                 Win Rate by opportunity count: {winRateByCount}%
               </Typography>
-              <Box className="chart-container" sx={{ height: '280px' }}>
+              <Box className="chart-container" sx={{ height: '200px' }}>
                 <PipelineChart 
                   data={pipelineData} 
                   valueType="count" 
@@ -86,7 +83,7 @@ function App() {
             </Paper>
             
             <Paper elevation={2} sx={{ p: 0 }}>
-              <Box className="table-container" sx={{ maxHeight: '300px', overflow: 'auto' }}>
+              <Box className="table-container" sx={{ maxHeight: '250px', overflow: 'auto' }}>
                 <PipelineTable 
                   data={pipelineData} 
                   valueType="count" 
@@ -102,7 +99,7 @@ function App() {
               <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
                 Win Rate by ACV: {winRateByACV}%
               </Typography>
-              <Box className="chart-container" sx={{ height: '280px' }}>
+              <Box className="chart-container" sx={{ height: '200px' }}>
                 <PipelineChart 
                   data={pipelineData} 
                   valueType="acv" 
@@ -111,7 +108,7 @@ function App() {
             </Paper>
             
             <Paper elevation={2} sx={{ p: 0 }}>
-              <Box className="table-container" sx={{ maxHeight: '300px', overflow: 'auto' }}>
+              <Box className="table-container" sx={{ maxHeight: '250px', overflow: 'auto' }}>
                 <PipelineTable 
                   data={pipelineData} 
                   valueType="acv" 
@@ -130,7 +127,7 @@ function App() {
             <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
               Win Rate by opportunity count: {winRateByCount}%
             </Typography>
-            <Box className="chart-container" sx={{ height: '280px' }}>
+            <Box className="chart-container" sx={{ height: '200px' }}>
               <PipelineChart 
                 data={pipelineData} 
                 valueType="count" 
@@ -152,7 +149,7 @@ function App() {
             <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
               Win Rate by ACV: {winRateByACV}%
             </Typography>
-            <Box className="chart-container" sx={{ height: '280px' }}>
+            <Box className="chart-container" sx={{ height: '200px' }}>
               <PipelineChart 
                 data={pipelineData} 
                 valueType="acv" 
