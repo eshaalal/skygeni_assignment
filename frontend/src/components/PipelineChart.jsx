@@ -1,4 +1,3 @@
-// src/components/PipelineChart.jsx
 import { useRef, useEffect } from 'react';
 import { Box, useTheme, useMediaQuery } from '@mui/material';
 import * as d3 from 'd3';
@@ -130,13 +129,18 @@ const PipelineChart = ({ data, valueType }) => {
         return `${percentage}%`;
       });
 
-    // Add percentage labels below bars for transition rates
+    // Add percentage labels between bars for transition rates
     svg.selectAll('.transition-label')
       .data(data.slice(0, -1)) // Skip the last item (Won)
       .enter()
       .append('text')
       .attr('class', 'transition-label')
-      .attr('y', d => y(d.label) + y.bandwidth() + 15)
+      .attr('y', (d, i) => {
+        // Position vertically between current bar and next bar
+        const currentBarBottom = y(d.label) + y.bandwidth();
+        const nextBarTop = i < data.length - 1 ? y(data[i + 1].label) : height;
+        return (currentBarBottom + nextBarTop) / 2; // Middle point between bars
+      })
       .attr('x', d => width / 2)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
