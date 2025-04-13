@@ -14,8 +14,8 @@ const PipelineChart = ({ data, valueType }) => {
     // Clear any existing chart
     d3.select(svgRef.current).selectAll('*').remove();
 
-    // Set dimensions - reduced for compactness
-    const margin = { top: 0, right: 60, bottom: 0, left: 60 };
+    // Set dimensions
+    const margin = { top: 0, right: 60, bottom: 0, left: 70 };
     let width = svgRef.current.clientWidth - margin.left - margin.right;
     const barHeight = isMobile ? 20 : is4K ? 40 : 25;
     const height = (barHeight + 5) * data.length;
@@ -37,15 +37,7 @@ const PipelineChart = ({ data, valueType }) => {
       .domain([0, 1])
       .range([0, width]);
 
-    // Helper function to format values
-    const formatValue = (value, type) => {
-      if (type === 'acv') {
-        return `$${Math.round(value).toLocaleString()}`;
-      }
-      return Math.round(value);
-    };
-
-    // Draw background bars (gray bars)
+    // Draw background bars (full width gray bars)
     svg.selectAll('.background-bar')
       .data(data)
       .enter()
@@ -57,7 +49,7 @@ const PipelineChart = ({ data, valueType }) => {
       .attr('width', width)
       .attr('fill', '#e0e0e0');
 
-    // Draw the green bars (foreground)
+    // Draw centered green bars
     svg.selectAll('.foreground-bar')
       .data(data)
       .enter()
@@ -65,7 +57,12 @@ const PipelineChart = ({ data, valueType }) => {
       .attr('class', 'foreground-bar')
       .attr('y', d => y(d.label))
       .attr('height', y.bandwidth())
-      .attr('x', 0)
+      .attr('x', d => {
+        const ratio = valueType === 'count' ? 
+          d.percentages.stageToSuspect.count / 100 : 
+          d.percentages.stageToSuspect.acv / 100;
+        return (width - x(ratio)) / 2; // Center the bar
+      })
       .attr('width', d => {
         const ratio = valueType === 'count' ? 
           d.percentages.stageToSuspect.count / 100 : 
@@ -74,7 +71,7 @@ const PipelineChart = ({ data, valueType }) => {
       })
       .attr('fill', '#8bc34a');
 
-    // Add stage labels
+    // Add stage labels (left side)
     svg.selectAll('.stage-label')
       .data(data)
       .enter()
@@ -88,27 +85,21 @@ const PipelineChart = ({ data, valueType }) => {
       .attr('fill', '#333')
       .text(d => d.label);
 
-    // Add value labels inside bars
+    // Add value labels (centered on green bars)
     svg.selectAll('.value-label')
       .data(data)
       .enter()
       .append('text')
       .attr('class', 'value-label')
       .attr('y', d => y(d.label) + y.bandwidth() / 2)
-      .attr('x', d => {
-        const ratio = valueType === 'count' ? 
-          d.percentages.stageToSuspect.count / 100 : 
-          d.percentages.stageToSuspect.acv / 100;
-        const xPos = x(ratio) / 2;
-        return Math.max(xPos, 30);
-      })
+      .attr('x', width / 2)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
       .attr('font-size', isMobile ? '10px' : is4K ? '14px' : '12px')
       .attr('fill', '#fff')
       .text(d => valueType === 'count' ? d.count : d.formattedACV);
 
-    // Add percentage labels on right side
+    // Add percentage labels (right side)
     svg.selectAll('.percentage-label')
       .data(data)
       .enter()
@@ -127,7 +118,7 @@ const PipelineChart = ({ data, valueType }) => {
         return `${percentage}%`;
       });
 
-    // Add percentage labels between bars for transition rates
+    // Add transition percentage labels between bars
     svg.selectAll('.transition-label')
       .data(data.slice(0, -1))
       .enter()
@@ -138,7 +129,7 @@ const PipelineChart = ({ data, valueType }) => {
         const nextBarTop = i < data.length - 1 ? y(data[i + 1].label) : height;
         return (currentBarBottom + nextBarTop) / 2;
       })
-      .attr('x', d => width / 2)
+      .attr('x', width / 2)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
       .attr('font-size', isMobile ? '8px' : is4K ? '12px' : '10px')
