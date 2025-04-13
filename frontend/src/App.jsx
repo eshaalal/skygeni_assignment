@@ -61,8 +61,8 @@ function App() {
   const winRateByACV = Math.round((wonData.acv / suspectData.acv) * 100);
 
   return (
-    <Container maxWidth="xl" className="pipeline-container">
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+    <Container maxWidth="xl" className="pipeline-container" sx={{ py: 2 }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 1 }}>
         <Tabs value={activeTab} onChange={handleTabChange} aria-label="pipeline tabs">
           <Tab label="SUMMARY" />
           <Tab label="DETAILS" />
@@ -70,14 +70,14 @@ function App() {
       </Box>
 
       {activeTab === 0 && (
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
           {/* Count-based card */}
           <Box sx={{ flex: 1, width: { xs: '100%', md: '50%' } }}>
-            <Paper elevation={3} sx={{ p: 3, mb: 2 }}>
-              <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
+            <Paper elevation={2} sx={{ p: 2, mb: 1 }}>
+              <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
                 Win Rate by opportunity count: {winRateByCount}%
               </Typography>
-              <Box className="chart-container" sx={{ mb: 4 }}>
+              <Box className="chart-container" sx={{ height: '280px' }}>
                 <PipelineChart 
                   data={pipelineData} 
                   valueType="count" 
@@ -85,11 +85,12 @@ function App() {
               </Box>
             </Paper>
             
-            <Paper elevation={3} sx={{ p: 0 }}>
-              <Box className="table-container">
+            <Paper elevation={2} sx={{ p: 0 }}>
+              <Box className="table-container" sx={{ maxHeight: '300px', overflow: 'auto' }}>
                 <PipelineTable 
                   data={pipelineData} 
                   valueType="count" 
+                  compact={true}
                 />
               </Box>
             </Paper>
@@ -97,11 +98,11 @@ function App() {
           
           {/* ACV-based card */}
           <Box sx={{ flex: 1, width: { xs: '100%', md: '50%' } }}>
-            <Paper elevation={3} sx={{ p: 3, mb: 2 }}>
-              <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
+            <Paper elevation={2} sx={{ p: 2, mb: 1 }}>
+              <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
                 Win Rate by ACV: {winRateByACV}%
               </Typography>
-              <Box className="chart-container" sx={{ mb: 4 }}>
+              <Box className="chart-container" sx={{ height: '280px' }}>
                 <PipelineChart 
                   data={pipelineData} 
                   valueType="acv" 
@@ -109,11 +110,12 @@ function App() {
               </Box>
             </Paper>
             
-            <Paper elevation={3} sx={{ p: 0 }}>
-              <Box className="table-container">
+            <Paper elevation={2} sx={{ p: 0 }}>
+              <Box className="table-container" sx={{ maxHeight: '300px', overflow: 'auto' }}>
                 <PipelineTable 
                   data={pipelineData} 
                   valueType="acv" 
+                  compact={true}
                 />
               </Box>
             </Paper>
@@ -122,13 +124,13 @@ function App() {
       )}
 
       {activeTab === 1 && (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {/* Count-based detailed view */}
-          <Paper elevation={3} sx={{ p: 3, mb: 2 }}>
-            <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
+          <Paper elevation={2} sx={{ p: 2, mb: 1 }}>
+            <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
               Win Rate by opportunity count: {winRateByCount}%
             </Typography>
-            <Box className="chart-container" sx={{ mb: 4 }}>
+            <Box className="chart-container" sx={{ height: '280px' }}>
               <PipelineChart 
                 data={pipelineData} 
                 valueType="count" 
@@ -136,7 +138,7 @@ function App() {
             </Box>
           </Paper>
           
-          <Paper elevation={3} sx={{ p: 0, mb: 4 }}>
+          <Paper elevation={2} sx={{ p: 0, mb: 2 }}>
             <Box className="table-container">
               <PipelineTable 
                 data={pipelineData} 
@@ -146,11 +148,11 @@ function App() {
           </Paper>
           
           {/* ACV-based detailed view */}
-          <Paper elevation={3} sx={{ p: 3, mb: 2 }}>
-            <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
+          <Paper elevation={2} sx={{ p: 2, mb: 1 }}>
+            <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
               Win Rate by ACV: {winRateByACV}%
             </Typography>
-            <Box className="chart-container" sx={{ mb: 4 }}>
+            <Box className="chart-container" sx={{ height: '280px' }}>
               <PipelineChart 
                 data={pipelineData} 
                 valueType="acv" 
@@ -158,7 +160,7 @@ function App() {
             </Box>
           </Paper>
           
-          <Paper elevation={3} sx={{ p: 0 }}>
+          <Paper elevation={2} sx={{ p: 0 }}>
             <Box className="table-container">
               <PipelineTable 
                 data={pipelineData} 
