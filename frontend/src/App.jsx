@@ -57,6 +57,10 @@ function App() {
   const winRateByCount = Math.round((wonData.count / suspectData.count) * 100);
   const winRateByACV = Math.round((wonData.acv / suspectData.acv) * 100);
 
+  // Smaller chart height
+  const chartHeight = 150;
+  const tableHeight = 230;
+
   return (
     <Container maxWidth="xl" className="pipeline-container" sx={{ py: 2 }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 1 }}>
@@ -70,11 +74,11 @@ function App() {
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
           {/* Count-based card */}
           <Box sx={{ flex: 1, width: { xs: '100%', md: '50%' } }}>
-            <Paper elevation={2} sx={{ p: 2, mb: 1 }}>
+            <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
               <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
                 Win Rate by opportunity count: {winRateByCount}%
               </Typography>
-              <Box className="chart-container" sx={{ height: '200px' }}>
+              <Box className="chart-container" sx={{ height: `${chartHeight}px` }}>
                 <PipelineChart 
                   data={pipelineData} 
                   valueType="count" 
@@ -82,24 +86,24 @@ function App() {
               </Box>
             </Paper>
             
-            <Paper elevation={2} sx={{ p: 0 }}>
-              <Box className="table-container" sx={{ maxHeight: '250px', overflow: 'auto' }}>
+            <Paper elevation={2} sx={{ p: 0, overflow: 'hidden' }}>
+              <TableContainer sx={{ height: `${tableHeight}px`, p: 0, m: 0 }}>
                 <PipelineTable 
                   data={pipelineData} 
                   valueType="count" 
                   compact={true}
                 />
-              </Box>
+              </TableContainer>
             </Paper>
           </Box>
           
           {/* ACV-based card */}
           <Box sx={{ flex: 1, width: { xs: '100%', md: '50%' } }}>
-            <Paper elevation={2} sx={{ p: 2, mb: 1 }}>
+            <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
               <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
                 Win Rate by ACV: {winRateByACV}%
               </Typography>
-              <Box className="chart-container" sx={{ height: '200px' }}>
+              <Box className="chart-container" sx={{ height: `${chartHeight}px` }}>
                 <PipelineChart 
                   data={pipelineData} 
                   valueType="acv" 
@@ -107,14 +111,14 @@ function App() {
               </Box>
             </Paper>
             
-            <Paper elevation={2} sx={{ p: 0 }}>
-              <Box className="table-container" sx={{ maxHeight: '250px', overflow: 'auto' }}>
+            <Paper elevation={2} sx={{ p: 0, overflow: 'hidden' }}>
+              <TableContainer sx={{ height: `${tableHeight}px`, p: 0, m: 0 }}>
                 <PipelineTable 
                   data={pipelineData} 
                   valueType="acv" 
                   compact={true}
                 />
-              </Box>
+              </TableContainer>
             </Paper>
           </Box>
         </Box>
@@ -123,11 +127,11 @@ function App() {
       {activeTab === 1 && (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {/* Count-based detailed view */}
-          <Paper elevation={2} sx={{ p: 2, mb: 1 }}>
+          <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
             <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
               Win Rate by opportunity count: {winRateByCount}%
             </Typography>
-            <Box className="chart-container" sx={{ height: '200px' }}>
+            <Box className="chart-container" sx={{ height: `${chartHeight}px` }}>
               <PipelineChart 
                 data={pipelineData} 
                 valueType="count" 
@@ -135,21 +139,21 @@ function App() {
             </Box>
           </Paper>
           
-          <Paper elevation={2} sx={{ p: 0, mb: 2 }}>
-            <Box className="table-container">
+          <Paper elevation={2} sx={{ p: 0, overflow: 'hidden', mb: 3 }}>
+            <TableContainer sx={{ height: `${tableHeight}px`, p: 0, m: 0 }}>
               <PipelineTable 
                 data={pipelineData} 
                 valueType="count" 
               />
-            </Box>
+            </TableContainer>
           </Paper>
           
           {/* ACV-based detailed view */}
-          <Paper elevation={2} sx={{ p: 2, mb: 1 }}>
+          <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
             <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
               Win Rate by ACV: {winRateByACV}%
             </Typography>
-            <Box className="chart-container" sx={{ height: '200px' }}>
+            <Box className="chart-container" sx={{ height: `${chartHeight}px` }}>
               <PipelineChart 
                 data={pipelineData} 
                 valueType="acv" 
@@ -157,18 +161,46 @@ function App() {
             </Box>
           </Paper>
           
-          <Paper elevation={2} sx={{ p: 0 }}>
-            <Box className="table-container">
+          <Paper elevation={2} sx={{ p: 0, overflow: 'hidden' }}>
+            <TableContainer sx={{ height: `${tableHeight}px`, p: 0, m: 0 }}>
               <PipelineTable 
                 data={pipelineData} 
                 valueType="acv" 
               />
-            </Box>
+            </TableContainer>
           </Paper>
         </Box>
       )}
     </Container>
   );
 }
+
+const TableContainer = ({ sx, children }) => {
+  return (
+    <Box 
+      className="table-container" 
+      sx={{ 
+        ...sx, 
+        overflow: 'auto',
+        width: '100%',
+        p: 0,
+        m: 0,
+        '&::-webkit-scrollbar': {
+          width: '8px',
+          height: '8px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: '#bdbdbd',
+          borderRadius: '4px',
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: '#f5f5f5',
+        }
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
 
 export default App;

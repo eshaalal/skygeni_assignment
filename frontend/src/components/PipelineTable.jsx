@@ -79,8 +79,27 @@ const PipelineTable = ({ data, valueType, compact = false }) => {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ overflow: 'auto' }}>
-      <Table size={compact || isMobile ? 'small' : 'medium'} sx={{ tableLayout: 'fixed' }}>
+    <TableContainer 
+      component={Paper} 
+      sx={{ 
+        overflow: 'auto',
+        width: '100%',
+        height: '100%',
+        m: 0,
+        p: 0,
+        borderRadius: 0,
+        boxShadow: 'none'
+      }}
+    >
+      <Table 
+        size={compact || isMobile ? 'small' : 'medium'} 
+        sx={{ 
+          tableLayout: 'fixed',
+          width: '100%',
+          m: 0,
+          height: '100%'
+        }}
+      >
         <TableHead>
           <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
             <TableCell align="center" sx={cellStyle}>Stage</TableCell>
