@@ -37,4 +37,4 @@ A full-stack web application built with modern technologies, showcasing interact
    npm install
    node server.js
    ```
-![Dashboard Preview](./assets/dashboard.png)
+![Dashboard Preview](./assets/image.png)
