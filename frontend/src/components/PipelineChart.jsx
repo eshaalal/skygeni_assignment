@@ -14,11 +14,11 @@ const PipelineChart = ({ data, valueType }) => {
     // Clear any existing chart
     d3.select(svgRef.current).selectAll('*').remove();
 
-    // Set dimensions with consistent top and bottom margins
-    const margin = { top: 20, right: 60, bottom: 20, left: 70 };
+    // Set dimensions with increased margins for better readability
+    const margin = { top: 20, right: 70, bottom: 20, left: 80 }; // Increased margins
     let width = svgRef.current.clientWidth - margin.left - margin.right;
-    const barHeight = isMobile ? 20 : is4K ? 40 : 25;
-    const height = (barHeight + 10) * data.length;
+    const barHeight = isMobile ? 24 : is4K ? 44 : 30; // Increased bar height
+    const height = (barHeight + 12) * data.length; // Increased spacing
 
     // Create SVG with explicit viewBox for better scaling
     const svg = d3.select(svgRef.current)
@@ -72,21 +72,22 @@ const PipelineChart = ({ data, valueType }) => {
       })
       .attr('fill', '#8bc34a');
 
-    // Add stage labels (left side)
+    // Add stage labels (left side) - increased font size
     svg.selectAll('.stage-label')
       .data(data)
       .enter()
       .append('text')
       .attr('class', 'stage-label')
       .attr('y', d => y(d.label) + y.bandwidth() / 2)
-      .attr('x', -10)
+      .attr('x', -12) // Moved slightly further left
       .attr('text-anchor', 'end')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', isMobile ? '10px' : is4K ? '14px' : '12px')
+      .attr('font-size', isMobile ? '11px' : is4K ? '16px' : '14px') // Increased font size
+      .attr('font-weight', '500') // Added some weight to the font
       .attr('fill', '#333')
       .text(d => d.label);
 
-    // Add value labels (centered on green bars)
+    // Add value labels (centered on green bars) - increased font size
     svg.selectAll('.value-label')
       .data(data)
       .enter()
@@ -96,21 +97,23 @@ const PipelineChart = ({ data, valueType }) => {
       .attr('x', width / 2)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', isMobile ? '10px' : is4K ? '14px' : '12px')
+      .attr('font-size', isMobile ? '11px' : is4K ? '16px' : '14px') // Increased font size
+      .attr('font-weight', 'bold') // Made the text bold
       .attr('fill', '#fff')
       .text(d => valueType === 'count' ? d.count : d.formattedACV);
 
-    // Add percentage labels (right side)
+    // Add percentage labels (right side) - increased font size
     svg.selectAll('.percentage-label')
       .data(data)
       .enter()
       .append('text')
       .attr('class', 'percentage-label')
       .attr('y', d => y(d.label) + y.bandwidth() / 2)
-      .attr('x', width + 15)
+      .attr('x', width + 18) // Moved slightly further right
       .attr('text-anchor', 'start')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', isMobile ? '10px' : is4K ? '14px' : '12px')
+      .attr('font-size', isMobile ? '11px' : is4K ? '16px' : '14px') // Increased font size
+      .attr('font-weight', '500') // Added some weight to the font
       .attr('fill', '#333')
       .text(d => {
         const percentage = valueType === 'count' ? 
@@ -135,7 +138,7 @@ const PipelineChart = ({ data, valueType }) => {
       .attr('x', width / 2)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', isMobile ? '9px' : is4K ? '12px' : '11px')
+      .attr('font-size', isMobile ? '10px' : is4K ? '14px' : '12px') // Increased font size
       .attr('font-weight', 'bold')
       .attr('fill', '#000')
       .text((d, i) => {
@@ -161,7 +164,15 @@ const PipelineChart = ({ data, valueType }) => {
   }, [data, valueType, isMobile, is4K]);
 
   return (
-    <Box sx={{ width: '100%', height: '100%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <Box sx={{ 
+      width: '100%', 
+      height: '100%', 
+      overflow: 'hidden', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      minHeight: '200px' // Added minimum height to ensure proper rendering
+    }}>
       <svg ref={svgRef} style={{ width: '100%', height: '100%', display: 'block' }} />
     </Box>
   );

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container, Grid, Paper, Typography, Box, CircularProgress, Tabs, Tab, Divider } from '@mui/material';
 import PipelineChart from './components/PipelineChart';
 import PipelineTable from './components/PipelineTable';
+import OpportunitySizeSegmentation from './components/OpportunitySizeSegmentation';
 import './App.css';
 
 function App() {
@@ -57,13 +58,13 @@ function App() {
   const winRateByCount = Math.round((wonData.count / suspectData.count) * 100);
   const winRateByACV = Math.round((wonData.acv / suspectData.acv) * 100);
 
-  // Smaller chart height
-  const chartHeight = 150;
-  const tableHeight = 230;
+  // Increased chart height
+  const chartHeight = 220; // Increased from 150
+  const tableHeight = 250; // Increased from 230
 
   return (
-    <Container maxWidth="xl" className="pipeline-container" sx={{ py: 2 }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 1 }}>
+    <Container maxWidth="xl" className="pipeline-container" sx={{ py: 4 }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
         <Tabs value={activeTab} onChange={handleTabChange} aria-label="pipeline tabs">
           <Tab label="SUMMARY" />
           <Tab label="WHAT-IF" />
@@ -71,14 +72,14 @@ function App() {
       </Box>
 
       {activeTab === 0 && (
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
           {/* Count-based card */}
           <Box sx={{ flex: 1, width: { xs: '100%', md: '50%' } }}>
-            <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
-              <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
+            <Paper elevation={2} sx={{ p: 3, mb: 3 }}> {/* Increased padding */}
+              <Typography variant="h6" sx={{ mb: 2, fontSize: '1.1rem' }}> {/* Increased font and margin */}
                 Win Rate by opportunity count: {winRateByCount}%
               </Typography>
-              <Box className="chart-container" sx={{ height: `${chartHeight}px` }}>
+              <Box className="chart-container" sx={{ height: `${chartHeight}px`, width: '100%' }}>
                 <PipelineChart 
                   data={pipelineData} 
                   valueType="count" 
@@ -86,8 +87,8 @@ function App() {
               </Box>
             </Paper>
             
-            <Paper elevation={2} sx={{ p: 0, overflow: 'hidden' }}>
-              <TableContainer sx={{ height: `${tableHeight}px`, p: 0, m: 0 }}>
+            <Paper elevation={2} sx={{ py: 2, overflow: 'hidden', mb: 4 }}>
+              <TableContainer sx={{ height: `${tableHeight}px` }}>
                 <PipelineTable 
                   data={pipelineData} 
                   valueType="count" 
@@ -99,11 +100,11 @@ function App() {
           
           {/* ACV-based card */}
           <Box sx={{ flex: 1, width: { xs: '100%', md: '50%' } }}>
-            <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
-              <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
+            <Paper elevation={2} sx={{ p: 3, mb: 3 }}> {/* Increased padding */}
+              <Typography variant="h6" sx={{ mb: 2, fontSize: '1.1rem' }}> {/* Increased font and margin */}
                 Win Rate by ACV: {winRateByACV}%
               </Typography>
-              <Box className="chart-container" sx={{ height: `${chartHeight}px` }}>
+              <Box className="chart-container" sx={{ height: `${chartHeight}px`, width: '100%' }}>
                 <PipelineChart 
                   data={pipelineData} 
                   valueType="acv" 
@@ -111,8 +112,8 @@ function App() {
               </Box>
             </Paper>
             
-            <Paper elevation={2} sx={{ p: 0, overflow: 'hidden' }}>
-              <TableContainer sx={{ height: `${tableHeight}px`, p: 0, m: 0 }}>
+            <Paper elevation={2} sx={{ py: 2, overflow: 'hidden', mb: 4 }}>
+              <TableContainer sx={{ height: `${tableHeight}px` }}>
                 <PipelineTable 
                   data={pipelineData} 
                   valueType="acv" 
@@ -125,51 +126,7 @@ function App() {
       )}
 
       {activeTab === 1 && (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {/* Count-based detailed view */}
-          <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
-            <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
-              Win Rate by opportunity count: {winRateByCount}%
-            </Typography>
-            <Box className="chart-container" sx={{ height: `${chartHeight}px` }}>
-              <PipelineChart 
-                data={pipelineData} 
-                valueType="count" 
-              />
-            </Box>
-          </Paper>
-          
-          <Paper elevation={2} sx={{ p: 0, overflow: 'hidden', mb: 3 }}>
-            <TableContainer sx={{ height: `${tableHeight}px`, p: 0, m: 0 }}>
-              <PipelineTable 
-                data={pipelineData} 
-                valueType="count" 
-              />
-            </TableContainer>
-          </Paper>
-          
-          {/* ACV-based detailed view */}
-          <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
-            <Typography variant="h6" sx={{ mb: 1, fontSize: '1rem' }}>
-              Win Rate by ACV: {winRateByACV}%
-            </Typography>
-            <Box className="chart-container" sx={{ height: `${chartHeight}px` }}>
-              <PipelineChart 
-                data={pipelineData} 
-                valueType="acv" 
-              />
-            </Box>
-          </Paper>
-          
-          <Paper elevation={2} sx={{ p: 0, overflow: 'hidden' }}>
-            <TableContainer sx={{ height: `${tableHeight}px`, p: 0, m: 0 }}>
-              <PipelineTable 
-                data={pipelineData} 
-                valueType="acv" 
-              />
-            </TableContainer>
-          </Paper>
-        </Box>
+        <OpportunitySizeSegmentation pipelineData={pipelineData} />
       )}
     </Container>
   );
@@ -182,9 +139,9 @@ const TableContainer = ({ sx, children }) => {
       sx={{ 
         ...sx, 
         overflow: 'auto',
-        width: '100%',
-        p: 0,
-        m: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
         '&::-webkit-scrollbar': {
           width: '8px',
           height: '8px',
