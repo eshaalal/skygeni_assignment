@@ -1,4 +1,4 @@
-// Pipeline data
+// Provided pipeline data
 const pipelineData = [
     {
         "label": "Suspect",
