@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     const fetchPipelineData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/pipeline-data');
+        const response = await fetch('https://skygeni-assignment-irhy.onrender.com/api/pipeline-data');
         if (!response.ok) {
           throw new Error('Failed to fetch pipeline data');
         }
