@@ -38,4 +38,12 @@ A full-stack web application built with modern technologies, showcasing interact
    node server.js
    ```
 ![Dashboard Preview](./assets/1.png)
+## 🚀 Innovation : Opportunity Size Segmentation
+**📊 Deal Size Categories: Define custom brackets like Small, Medium, Large, and Enterprise**
+
+**🔢 Mock Deal Generation: Simulate pipeline deals to analyze segmentation impact**
+
+**📈 Win Rate & Performance Metrics: Automatically computed for each deal size**
+
+**📉 Interactive Charts: Visualize performance by segment with clean, dynamic visuals**
 ![Dashboard Preview](./assets/2.png)
