@@ -38,6 +38,7 @@ A full-stack web application built with modern technologies, showcasing interact
    node server.js
    ```
 ![Dashboard Preview](./assets/1.png)
+
 ## 🚀 Innovation : Opportunity Size Segmentation
 **📊 Deal Size Categories: Define custom brackets like Small, Medium, Large, and Enterprise**
 
@@ -46,6 +47,5 @@ A full-stack web application built with modern technologies, showcasing interact
 **📈 Win Rate & Performance Metrics: Automatically computed for each deal size**
 
 **📉 Interactive Charts: Visualize performance by segment with clean, dynamic visuals**
-
 
 ![Dashboard Preview](./assets/2.png)
