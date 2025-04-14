@@ -48,4 +48,5 @@ A full-stack web application built with modern technologies, showcasing interact
 
 **📉 Interactive Charts: Visualize performance by segment with clean, dynamic visuals**
 
+
 ![Dashboard Preview](./assets/2.png)
