@@ -38,3 +38,4 @@ A full-stack web application built with modern technologies, showcasing interact
    node server.js
    ```
 ![Dashboard Preview](./assets/image.png)
+![Dashboard Preview](./assets/image2.png)
