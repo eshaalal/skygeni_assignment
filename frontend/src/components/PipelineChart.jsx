@@ -14,24 +14,25 @@ const PipelineChart = ({ data, valueType }) => {
     // Clear any existing chart
     d3.select(svgRef.current).selectAll('*').remove();
 
-    // Set dimensions
-    const margin = { top: 0, right: 60, bottom: 0, left: 70 };
+    // Set dimensions with consistent top and bottom margins
+    const margin = { top: 20, right: 60, bottom: 20, left: 70 };
     let width = svgRef.current.clientWidth - margin.left - margin.right;
     const barHeight = isMobile ? 20 : is4K ? 40 : 25;
-    const height = (barHeight + 5) * data.length;
+    const height = (barHeight + 10) * data.length;
 
-    // Create SVG
+    // Create SVG with explicit viewBox for better scaling
     const svg = d3.select(svgRef.current)
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
+      .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    // Define scales
+    // Define scales with consistent padding
     const y = d3.scaleBand()
       .domain(data.map(d => d.label))
       .range([0, height])
-      .padding(0.3);
+      .padding(0.4);
 
     const x = d3.scaleLinear()
       .domain([0, 1])
@@ -118,22 +119,25 @@ const PipelineChart = ({ data, valueType }) => {
         return `${percentage}%`;
       });
 
-    // Add transition percentage labels between bars
+    // Add transition percentage labels with consistent spacing
+    const transitionGap = (y.bandwidth() + y.step() * (1 - y.paddingInner())) / 2;
+    
     svg.selectAll('.transition-label')
       .data(data.slice(0, -1))
       .enter()
       .append('text')
       .attr('class', 'transition-label')
       .attr('y', (d, i) => {
-        const currentBarBottom = y(d.label) + y.bandwidth();
-        const nextBarTop = i < data.length - 1 ? y(data[i + 1].label) : height;
-        return (currentBarBottom + nextBarTop) / 2;
+        const currentY = y(d.label);
+        const nextY = y(data[i + 1].label);
+        return currentY + y.bandwidth() + (nextY - (currentY + y.bandwidth())) / 2;
       })
       .attr('x', width / 2)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', isMobile ? '8px' : is4K ? '12px' : '10px')
-      .attr('fill', '#666')
+      .attr('font-size', isMobile ? '9px' : is4K ? '12px' : '11px')
+      .attr('font-weight', 'bold')
+      .attr('fill', '#000')
       .text((d, i) => {
         if (i < data.length - 1) {
           const nextStage = data[i + 1];
@@ -145,11 +149,20 @@ const PipelineChart = ({ data, valueType }) => {
         return '';
       });
 
+    // Ensure all rows have consistent spacing
+    const lastItemY = y(data[data.length - 1].label);
+    const lastItemHeight = y.bandwidth();
+    const bottomBuffer = svg.append('rect')
+      .attr('width', 0)
+      .attr('height', 0)
+      .attr('y', lastItemY + lastItemHeight + transitionGap)
+      .attr('opacity', 0);
+
   }, [data, valueType, isMobile, is4K]);
 
   return (
-    <Box sx={{ width: '100%', height: 'auto', overflow: 'hidden' }}>
-      <svg ref={svgRef} style={{ width: '100%', height: '100%' }} />
+    <Box sx={{ width: '100%', height: '100%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <svg ref={svgRef} style={{ width: '100%', height: '100%', display: 'block' }} />
     </Box>
   );
 };
