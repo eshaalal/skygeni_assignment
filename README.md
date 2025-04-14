@@ -46,4 +46,6 @@ A full-stack web application built with modern technologies, showcasing interact
 **📈 Win Rate & Performance Metrics: Automatically computed for each deal size**
 
 **📉 Interactive Charts: Visualize performance by segment with clean, dynamic visuals**
+
+
 ![Dashboard Preview](./assets/2.png)
