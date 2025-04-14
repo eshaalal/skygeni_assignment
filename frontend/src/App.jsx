@@ -66,7 +66,7 @@ function App() {
       <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 1 }}>
         <Tabs value={activeTab} onChange={handleTabChange} aria-label="pipeline tabs">
           <Tab label="SUMMARY" />
-          <Tab label="DETAILS" />
+          <Tab label="WHAT-IF" />
         </Tabs>
       </Box>
 
